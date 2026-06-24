@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Algo Showdown &mdash; Vincere Trading</title>
+<title>Algo Showdown | Vincere Trading</title>
 <style>
   :root{
     --bg:#0a0e1a; --panel:#111a2e; --panel2:#16223d; --cell:#13284f;
@@ -257,7 +257,7 @@
 <div class="overlay fj" id="fjOverlay">
   <div class="modal">
     <div class="top">
-      <span class="cat-name">Final Jeopardy &mdash; <span id="fjCat"></span></span>
+      <span class="cat-name">Final Jeopardy: <span id="fjCat"></span></span>
       <span class="val">All in</span>
     </div>
     <div class="body">
@@ -295,7 +295,7 @@
     <ol>
       <li><b>Turn on the music:</b> tick the &#127925; <b>Music</b> box in the top bar. The Jeopardy theme plays only while a clue is open and stops the instant you reveal the answer.</li>
       <li><b>Set your players:</b> use the <b>Players</b> dropdown to pick 1&ndash;5 contestants (it starts at 1). Scoreboards are added or removed automatically.</li>
-      <li><b>Pick a clue:</b> click any dollar value on the board. A <b>0:30</b> timer starts &mdash; lock in your answer before it hits TIME!</li>
+      <li><b>Pick a clue:</b> click any dollar value on the board. A <b>0:30</b> timer starts. Lock in your answer before it hits TIME!</li>
       <li><b>Score &amp; finish:</b> hit <b>Reveal</b>, then use the <b>+ / -</b> buttons to award or deduct, and close the clue. When the board is done, play <b>Final Jeopardy</b> for secret wagers to crown the winner.</li>
       <li><b>Daily Double &#11088;:</b> if a clue shows the Daily Double banner, the active player first types a <b>wager</b> (Set Wager), then answers; you award or deduct that wager.</li>
     </ol>
@@ -604,7 +604,7 @@ function buildFjResults(){
   res.innerHTML='';
   teams.forEach((t,i)=>{
     const r=document.createElement('div'); r.className='row';
-    r.innerHTML=`<span class="nm">${escapeHtml(t.name)} &mdash; wagered $${wagers[i]}</span>
+    r.innerHTML=`<span class="nm">${escapeHtml(t.name)}, wagered $${wagers[i]}</span>
       <div class="res">
         <button class="btn-plus" data-i="${i}" data-w="${wagers[i]}" data-s="1">Correct +</button>
         <button class="btn-minus" data-i="${i}" data-w="${wagers[i]}" data-s="-1">Wrong -</button>
