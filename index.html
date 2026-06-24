@@ -35,6 +35,14 @@
   }
   .shell{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 
+  /* ============ Themed scrollbars ============ */
+  html{scrollbar-width:thin;scrollbar-color:var(--gold) var(--bg2)}
+  ::-webkit-scrollbar{width:12px;height:12px}
+  ::-webkit-scrollbar-track{background:var(--bg2)}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold2),var(--gold));border-radius:8px;border:3px solid var(--bg2)}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold2)}
+  ::-webkit-scrollbar-corner{background:var(--bg2)}
+
   /* ============ Ambient background (what the glass blurs over) ============ */
   .ambient{position:fixed;inset:0;z-index:-2;overflow:hidden;background:
     radial-gradient(120% 80% at 50% -10%, #13203b 0%, transparent 55%),
@@ -80,8 +88,8 @@
   }
   .hero-card{position:relative;padding:42px 46px;overflow:hidden}
   .hero-card .crest{
-    position:absolute;right:-30px;top:50%;transform:translateY(-50%);
-    width:280px;opacity:.10;pointer-events:none;
+    position:absolute;right:40px;top:50%;transform:translateY(-50%);
+    width:210px;max-height:78%;opacity:.12;pointer-events:none;
     filter:drop-shadow(0 0 60px rgba(244,196,48,.5))}
   .eyebrow{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.26em;
     text-transform:uppercase;color:var(--gold);margin-bottom:14px}
@@ -135,7 +143,7 @@
     .steps{grid-template-columns:1fr}
     .hero{padding:36px 0 28px}
     .hero-card{padding:30px 22px}
-    .hero-card .crest{opacity:.06;width:200px}
+    .hero-card .crest{display:none}
     .game-frame iframe{height:2800px}
   }
 
@@ -243,7 +251,13 @@
           if(d.getElementById('embed-fit')) return;
           var st = d.createElement('style');
           st.id = 'embed-fit';
-          st.textContent = 'html,body{min-height:0 !important;height:auto !important;}';
+          st.textContent = 'html,body{min-height:0 !important;height:auto !important;}'
+            + 'html{scrollbar-width:thin;scrollbar-color:#f4c430 #0d1426;}'
+            + '::-webkit-scrollbar{width:12px;height:12px;}'
+            + '::-webkit-scrollbar-track{background:#0d1426;}'
+            + '::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ffd95e,#f4c430);border-radius:8px;border:3px solid #0d1426;}'
+            + '::-webkit-scrollbar-thumb:hover{background:#ffd95e;}'
+            + '::-webkit-scrollbar-corner{background:#0d1426;}';
           (d.head || d.documentElement).appendChild(st);
         }catch(e){}
       }
