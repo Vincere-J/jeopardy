@@ -120,7 +120,7 @@
     padding:9px 16px;border-radius:10px;transition:.15s;white-space:nowrap}
   .open-full:hover{color:var(--gold);border-color:var(--gold)}
   .game-frame{padding:12px;border-radius:22px}
-  .game-frame iframe{width:100%;height:920px;border:0;border-radius:14px;display:block;background:var(--bg2);overflow:hidden}
+  .game-frame iframe{width:100%;height:1800px;border:0;border-radius:14px;display:block;background:var(--bg2);overflow:hidden}
 
   /* ============ Footer ============ */
   footer{margin-top:48px;border-top:1px solid var(--line);padding:38px 0 56px}
@@ -136,7 +136,7 @@
     .hero{padding:36px 0 28px}
     .hero-card{padding:30px 22px}
     .hero-card .crest{opacity:.06;width:200px}
-    .game-frame iframe{height:1150px}
+    .game-frame iframe{height:2800px}
   }
 
   /* ============ Accessibility ============ */
@@ -190,7 +190,7 @@
         <a class="open-full" href="algo-showdown.html" target="_blank" rel="noopener">Open full screen ↗</a>
       </div>
       <div class="glass game-frame">
-        <iframe id="gameFrame" src="algo-showdown.html" title="Algo Showdown game" loading="lazy"></iframe>
+        <iframe id="gameFrame" src="algo-showdown.html" title="Algo Showdown game"></iframe>
       </div>
     </div>
   </section>
@@ -236,26 +236,35 @@
       var f = document.getElementById('gameFrame');
       if(!f) return;
       function doc(){ try{ return f.contentDocument || f.contentWindow.document; }catch(e){ return null; } }
+      // Remove the game's min-height:100vh inside the frame so its body height
+      // equals its true content height (stable, no feedback loop when we resize).
+      function neutralize(d){
+        try{
+          if(d.getElementById('embed-fit')) return;
+          var st = d.createElement('style');
+          st.id = 'embed-fit';
+          st.textContent = 'html,body{min-height:0 !important;height:auto !important;}';
+          (d.head || d.documentElement).appendChild(st);
+        }catch(e){}
+      }
       function fit(){
-        var d = doc(); if(!d) return;
-        var h = Math.max(
-          d.documentElement ? d.documentElement.scrollHeight : 0,
-          d.body ? d.body.scrollHeight : 0
-        );
+        var d = doc(); if(!d || !d.body) return;
+        var h = d.body.scrollHeight;
         if(h > 0) f.style.height = h + 'px';
       }
       f.addEventListener('load', function(){
+        var d = doc();
+        neutralize(d);
         fit();
-        var d = doc(); if(!d) return;
-        // Re-fit whenever the game's content changes size (board clears, Final round, etc.)
+        if(!d) return;
+        // Re-fit only when the game's actual content changes (e.g. Final Jeopardy).
         try{
           if('ResizeObserver' in window){
             var ro = new ResizeObserver(fit);
-            if(d.documentElement) ro.observe(d.documentElement);
             if(d.body) ro.observe(d.body);
           }
         }catch(e){}
-        // When a clue popup opens, scroll it into the center of the screen
+        // When a clue popup opens, scroll it into the center of the screen.
         try{
           var ov = d.querySelector('.overlay');
           if(ov){
@@ -269,8 +278,8 @@
             mo.observe(ov, { attributes:true, attributeFilter:['class'] });
           }
         }catch(e){}
-        // Safety re-fits for late layout/fonts
-        setTimeout(fit, 300); setTimeout(fit, 1000);
+        // Safety re-fits for late layout/fonts.
+        setTimeout(fit, 300); setTimeout(fit, 1000); setTimeout(fit, 2500);
       });
       window.addEventListener('resize', fit);
     })();
