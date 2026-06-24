@@ -91,17 +91,17 @@
     position:absolute;right:40px;top:50%;transform:translateY(-50%);
     width:210px;max-height:78%;opacity:.12;pointer-events:none;
     filter:drop-shadow(0 0 60px rgba(244,196,48,.5))}
-  .eyebrow{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.26em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .eyebrow{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:18px}
   .eyebrow .dot{color:var(--blue2)}
   h1{font-family:var(--display);font-weight:700;line-height:1.0;letter-spacing:-.01em;
-    font-size:clamp(36px,5.4vw,58px);margin-bottom:16px;
+    font-size:clamp(54px,8.1vw,87px);margin-bottom:22px;
     background:linear-gradient(180deg,#fff 30%,#cdd8f2);-webkit-background-clip:text;background-clip:text;color:transparent}
   h1 .gold{background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .lede{font-size:16px;color:var(--muted);max-width:52ch;margin-bottom:26px;position:relative}
-  .btn-row{display:flex;gap:12px;flex-wrap:wrap;position:relative}
-  .btn{font-family:var(--display);font-weight:600;font-size:15px;text-decoration:none;border-radius:12px;
-    padding:13px 26px;transition:transform .15s, box-shadow .15s, border-color .15s, color .15s}
+  .lede{font-size:24px;color:var(--muted);max-width:52ch;margin-bottom:34px;position:relative}
+  .btn-row{display:flex;gap:16px;flex-wrap:wrap;position:relative}
+  .btn{font-family:var(--display);font-weight:600;font-size:22px;text-decoration:none;border-radius:12px;
+    padding:18px 38px;transition:transform .15s, box-shadow .15s, border-color .15s, color .15s}
   .btn-gold{color:#241c00;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 10px 28px rgba(244,196,48,.32)}
   .btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(244,196,48,.45)}
   .btn-glass{color:var(--text);background:var(--glass-strong);border:1px solid var(--hairline);
@@ -110,9 +110,9 @@
 
   /* ============ How to play ============ */
   .section{padding:26px 0;scroll-margin-top:84px}
-  .kicker{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.24em;
+  .kicker{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.24em;
     text-transform:uppercase;color:var(--blue2);margin-bottom:10px}
-  .section h2{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);
+  .section h2{font-family:var(--display);font-weight:700;font-size:clamp(33px,4.5vw,45px);
     letter-spacing:-.01em;margin-bottom:6px}
   .section .sub{color:var(--muted);font-size:15px;margin-bottom:22px;max-width:60ch}
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -124,8 +124,8 @@
 
   /* ============ Game ============ */
   .game-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-  .open-full{font-size:14px;color:var(--muted);text-decoration:none;border:1px solid var(--line);
-    padding:9px 16px;border-radius:10px;transition:.15s;white-space:nowrap}
+  .open-full{font-size:21px;color:var(--muted);text-decoration:none;border:1px solid var(--line);
+    padding:12px 22px;border-radius:10px;transition:.15s;white-space:nowrap}
   .open-full:hover{color:var(--gold);border-color:var(--gold)}
   .game-frame{padding:12px;border-radius:22px}
   .game-frame iframe{width:100%;height:1800px;border:0;border-radius:14px;display:block;background:var(--bg2);overflow:hidden}
@@ -167,7 +167,6 @@
         <span class="wm">Vincere</span>
       </div>
       <div class="nav-links">
-        <a href="#how">How to play</a>
         <a class="cta" href="#game">Start the game</a>
       </div>
     </div>
@@ -182,7 +181,6 @@
         <p class="lede">Game-show-style trivia for Vincere clients. Pick a square, take the clue, rack up points.</p>
         <div class="btn-row">
           <a class="btn btn-gold" href="#game">Start the game</a>
-          <a class="btn btn-glass" href="#how">How it works</a>
         </div>
       </div>
     </div>
@@ -199,30 +197,6 @@
       </div>
       <div class="glass game-frame">
         <iframe id="gameFrame" src="algo-showdown.html" title="Algo Showdown game"></iframe>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="how">
-    <div class="shell">
-      <div class="kicker">How it works</div>
-      <h2>Three steps to the title</h2>
-      <div class="steps">
-        <div class="glass step">
-          <div class="n">STEP 01</div>
-          <h3>Pick your square</h3>
-          <p>Choose a category and a dollar value.</p>
-        </div>
-        <div class="glass step">
-          <div class="n">STEP 02</div>
-          <h3>Beat the buzzer</h3>
-          <p>Read the clue, lock in your answer.</p>
-        </div>
-        <div class="glass step">
-          <div class="n">STEP 03</div>
-          <h3>Win the round</h3>
-          <p>Tally the scores, crown a champion.</p>
-        </div>
       </div>
     </div>
   </section>
