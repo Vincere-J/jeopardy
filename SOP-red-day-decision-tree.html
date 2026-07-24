@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOP: Red Day Decision Tree</title>
+<style>
+  :root{
+    --paper:#0a1224; --pill:#152142; --card:#101b36; --card-edge:#26325a;
+    --ink:#f4f1e8; --muted:#9aa4c4; --line:#233052;
+    --gold-900:#8a6a1f; --gold-700:#c79a3a; --gold-500:#e3b34d; --gold-300:#f0cf82;
+    --ok:#3fb27f; --ok-700:#2e8f66;
+    --display:"Georgia","Times New Roman",serif;
+    --ui:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 14px 34px -18px rgba(0,0,0,.6);
+    --r:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; color:var(--ink);
+    background:radial-gradient(ellipse at top,#0d1730 0%,var(--paper) 60%);
+    font-family:var(--ui); font-size:18px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px; margin:0 auto; padding:clamp(22px,5vw,48px) clamp(18px,5vw,32px) 80px;}
+  .brand{text-align:center; margin:0 0 6px;}
+  .wordmark{font-family:var(--display); letter-spacing:.28em; font-size:.85rem; color:var(--gold-300); text-transform:uppercase;}
+  .eyebrow{display:block; text-align:center; background:var(--pill); color:var(--gold-300);
+    font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; padding:8px 16px;
+    border-radius:99px; margin:16px auto 22px; width:fit-content;}
+  h1{font-family:var(--display); font-weight:700; font-size:clamp(2rem,6vw,3rem); line-height:1.1; letter-spacing:-.01em;
+    margin:0 0 14px; color:#fff; text-align:center;}
+  .lede{font-size:clamp(1rem,2.2vw,1.15rem); color:var(--muted); margin:0 auto; max-width:56ch; text-align:center;}
+
+  .meter{margin:30px 0 8px; padding:18px 20px; background:var(--card); border:1px solid var(--card-edge);
+    border-radius:var(--r); box-shadow:var(--shadow); display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .meter-count{font-family:var(--display); font-size:1.3rem; font-weight:700; white-space:nowrap;}
+  .meter-count b{color:var(--gold-500);}
+  .meter-bar{flex:1 1 200px; height:12px; border-radius:99px; background:#1b2647; overflow:hidden;}
+  .meter-fill{height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--gold-700),var(--gold-500)); transition:width .5s cubic-bezier(.2,.8,.2,1);}
+  .meter-note{flex-basis:100%; font-size:.95rem; color:var(--muted); margin:0;}
+
+  .steps{margin:34px 0 0; padding:0; list-style:none; position:relative;}
+  .steps::before{content:""; position:absolute; left:23px; top:30px; bottom:60px; width:3px; background:var(--line); border-radius:2px;}
+  .steps::after{content:""; position:absolute; left:23px; top:30px; width:3px; height:var(--spine,0px);
+    background:linear-gradient(180deg,var(--gold-300),var(--gold-700)); border-radius:2px; transition:height .5s cubic-bezier(.2,.8,.2,1);}
+  @media (max-width:560px){ .steps::before,.steps::after{left:19px;} }
+  .step{position:relative; padding-left:64px; margin-bottom:22px;}
+  @media (max-width:560px){ .step{padding-left:52px;} }
+  .node{position:absolute; left:0; top:22px; width:48px; height:48px; border-radius:50%;
+    background:var(--card); border:3px solid var(--line); color:var(--gold-500);
+    display:grid; place-items:center; font-family:var(--display); font-weight:700; font-size:1.2rem;
+    z-index:2; transition:background .3s ease, border-color .3s ease, color .3s ease, transform .3s ease;}
+  @media (max-width:560px){ .node{width:40px; height:40px; font-size:1.05rem;} }
+  .card{background:var(--card); border:1px solid var(--card-edge); border-radius:var(--r); box-shadow:var(--shadow); padding:22px 24px 24px; transition:border-color .3s ease;}
+  .card h2{font-family:var(--display); font-weight:700; font-size:1.3rem; line-height:1.2; margin:0 0 6px; color:#fff;}
+  .time{font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold-500); font-weight:700; margin:0 0 12px;}
+  .why{margin:0 0 16px; color:var(--muted);}
+  ul.todo{margin:0 0 4px; padding:0; list-style:none;}
+  ul.todo li{position:relative; padding:0 0 12px 30px; color:var(--ink);}
+  ul.todo li::before{content:"→"; position:absolute; left:0; top:0; color:var(--gold-500); font-weight:700;}
+  ul.todo li:last-child{padding-bottom:0;}
+  .verdict{margin:14px 0 0; padding:12px 16px; border-left:3px solid var(--gold-500);
+    background:rgba(227,179,77,.08); border-radius:0 10px 10px 0; font-size:.95rem; color:var(--gold-300);}
+  .actions{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:20px;}
+  .btn{appearance:none; cursor:pointer; text-decoration:none; font-family:var(--ui); font-weight:600; font-size:1rem;
+    border-radius:12px; padding:14px 20px; min-height:50px; display:inline-flex; align-items:center; gap:9px; border:1px solid var(--line);
+    background:transparent; color:var(--gold-300); transition:transform .12s ease, background .2s ease, box-shadow .2s ease;}
+  .btn:active{transform:translateY(1px);}
+  .btn:hover{border-color:var(--gold-500); color:#fff;}
+  .step.done .node{background:var(--gold-500); border-color:var(--gold-500); color:#1a1200; transform:scale(1.03);}
+  .step.done .card{border-color:var(--gold-500);}
+  .step.done .card h2{color:var(--gold-300);}
+  .step.done .btn{background:var(--ok); color:#fff; border-color:var(--ok);}
+  .step.done .btn:hover{background:var(--ok-700);}
+  .finish{margin-top:8px; padding:34px 30px; border-radius:22px; text-align:center;
+    background:linear-gradient(160deg,#1a1200,#3a2a05); color:var(--gold-300); box-shadow:var(--shadow);
+    opacity:.55; transition:opacity .5s ease; border:1px solid var(--gold-700);}
+  .finish.ready{opacity:1;}
+  .finish h2{font-family:var(--display); font-weight:700; font-size:1.6rem; margin:0 0 8px; color:#fff;}
+  .finish p{margin:0 auto; max-width:48ch;}
+  .finish .badge{display:inline-block; margin-top:14px; padding:10px 20px; border-radius:99px; font-weight:700; font-size:1.05rem;}
+  .reset{display:block; margin:26px auto 0; background:none; border:0; color:var(--muted); font-family:var(--ui); font-size:.9rem; cursor:pointer; text-decoration:underline;}
+  .reset:hover{color:var(--gold-300);}
+  footer{margin-top:44px; padding-top:22px; border-top:1px solid var(--line); font-size:.8rem; line-height:1.6; color:#6f7794; text-align:center;}
+  figure.shot{margin:16px 0 2px;}
+  figure.shot img{display:block; width:100%; height:auto; border-radius:12px; border:1px solid var(--card-edge);}
+  figure.shot figcaption{margin-top:8px; font-size:.75rem; letter-spacing:.05em; text-transform:uppercase; color:var(--gold-500); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="wordmark">Vincere</span></div>
+  <span class="eyebrow">Coffee &amp; Algos · Trading Education</span>
+  <h1>Red Day Decision Tree</h1>
+  <p class="lede">A 90-second self-check for after a rough trading day. Answer honestly at each step — the tree tells you where you land.</p>
+
+  <div class="meter">
+    <div class="meter-count"><b id="doneCount">0</b>/4 checks run</div>
+    <div class="meter-bar"><div class="meter-fill" id="meterFill"></div></div>
+    <p class="meter-note">Run every check in order. The first "yes" is your bucket — stop there.</p>
+  </div>
+
+  <figure class="shot">
+    <img src="img/hero-tree-wide.png" alt="Red Day Decision Tree overview">
+    <figcaption>Overview — 4 buckets</figcaption>
+  </figure>
+
+  <ol class="steps" id="stepsList">
+    <li class="step" data-step="1">
+      <div class="node">1</div>
+      <div class="card">
+        <h2>Was the setup correct?</h2>
+        <div class="time">Check the machine</div>
+        <p class="why">Confirm before you judge the strategy. This is where most false alarms live — a disabled row or a sync miss looks exactly like "the algo broke" until you check it.</p>
+        <ul class="todo">
+          <li>Correct account and contract are running</li>
+          <li>Strategy row is enabled and synced</li>
+          <li>No unexpected open position</li>
+          <li>No connection or log warnings</li>
+        </ul>
+        <div class="verdict">If NO to any of these → <b>Review Setup</b>. Stop here, fix the setup, then re-check the day.</div>
+        <div class="actions">
+          <button class="btn" data-action="done">Checked — setup is correct, continue</button>
+        </div>
+      </div>
+    </li>
+
+    <li class="step" data-step="2">
+      <div class="node">2</div>
+      <div class="card">
+        <h2>Was the loss inside the plan?</h2>
+        <div class="time">Check the risk</div>
+        <p class="why">Uncomfortable does not always mean broken. A loss that respects your planned daily/weekly risk is a normal outcome of a rules-based system, not a signal to intervene.</p>
+        <ul class="todo">
+          <li>Daily loss stayed within your planned risk range</li>
+          <li>No rule violations occurred</li>
+          <li>Drawdown cushion still has meaningful room</li>
+        </ul>
+        <div class="verdict">If YES → <b>Keep Running</b>. Nothing to do. Red does not always mean broken.</div>
+        <div class="actions">
+          <button class="btn" data-action="done">Checked — loss exceeded plan or cushion is thin, continue</button>
+        </div>
+      </div>
+    </li>
+
+    <li class="step" data-step="3">
+      <div class="node">3</div>
+      <div class="card">
+        <h2>Is the account still valid, but the cushion thinner?</h2>
+        <div class="time">Protect the account</div>
+        <p class="why">The account hasn't broken any rule and isn't blown — but it's carrying less room than it was. This is a sizing/exposure decision, not a panic decision.</p>
+        <ul class="todo">
+          <li>Account is still valid and tradeable</li>
+          <li>Drawdown cushion is meaningfully thinner after a rough stretch</li>
+          <li>You're close enough to drawdown that full size no longer makes sense</li>
+        </ul>
+        <div class="verdict">If YES → <b>Reduce Risk</b>. Cut size, accounts, or aggression. Protect first, recover second.</div>
+        <div class="actions">
+          <button class="btn" data-action="done">Checked — this isn't a sizing issue, continue</button>
+        </div>
+      </div>
+    </li>
+
+    <li class="step" data-step="4">
+      <div class="node">4</div>
+      <div class="card">
+        <h2>Are emotions or uncertainty driving decisions?</h2>
+        <div class="time">Protect the decision quality</div>
+        <p class="why">This is the step members skip most — and the one with the highest cost when skipped. The urge to "win it back" is the tell.</p>
+        <ul class="todo">
+          <li>You feel the urge to add accounts or size to make it back</li>
+          <li>You're frustrated, staring at every tick, tempted to intervene manually</li>
+          <li>You're not sure what's even running anymore</li>
+        </ul>
+        <div class="verdict">If YES → <b>Pause</b>. Step back before you make a bigger mistake. If none of the 4 checks fired, the correct call is <b>Keep Running</b>.</div>
+        <div class="actions">
+          <button class="btn" data-action="done">Checked — I've run all 4 checks</button>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="finish" id="finish">
+    <div class="node" style="position:static;display:inline-grid;margin-bottom:14px;">✓</div>
+    <h2>Check complete</h2>
+    <p>You've run the tree in order. Land on the first bucket that matched — that's your action for today. If you landed on Review Setup and it doesn't resolve, file a support ticket with the account, strategy, and what the log showed.</p>
+  </div>
+
+  <button class="reset" id="resetBtn">Reset checklist</button>
+
+  <figure class="shot">
+    <img src="img/normal-vs-problem.png" alt="Normal vs Problem quick filter">
+    <figcaption>Fast filter — use before or after the full tree</figcaption>
+  </figure>
+
+  <footer>
+    Vincere Trading · Coffee &amp; Algos, Tuesdays 9:15 ET. Full written reference: <code>RED_DAY_DECISION_TREE.md</code>.
+    No em dashes; process over P&amp;L is the whole point of this tree — not a substitute for it.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var total = steps.length;
+  var doneCount = document.getElementById('doneCount');
+  var meterFill = document.getElementById('meterFill');
+  var stepsList = document.getElementById('stepsList');
+  var finish = document.getElementById('finish');
+  var STORAGE_KEY = 'vincere-red-day-sop-v1';
+
+  function saveState(){
+    var state = steps.map(function(s){ return s.classList.contains('done'); });
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      var state = JSON.parse(raw);
+      steps.forEach(function(s,i){ if(state[i]) markDone(s, false); });
+    }catch(e){}
+  }
+  function markDone(step, save){
+    step.classList.add('done');
+    var btn = step.querySelector('.btn');
+    if(btn) btn.textContent = 'Done';
+    update();
+    if(save !== false) saveState();
+  }
+  function update(){
+    var done = steps.filter(function(s){ return s.classList.contains('done'); }).length;
+    doneCount.textContent = done;
+    var pct = Math.round((done/total)*100);
+    meterFill.style.width = pct + '%';
+    var lastDoneIdx = -1;
+    steps.forEach(function(s,i){ if(s.classList.contains('done')) lastDoneIdx = i; });
+    var spine = lastDoneIdx >= 0 ? ((lastDoneIdx+1) * (steps[0].offsetHeight + 22)) - 40 : 0;
+    stepsList.style.setProperty('--spine', spine + 'px');
+    finish.classList.toggle('ready', done === total);
+  }
+  steps.forEach(function(step){
+    var btn = step.querySelector('.btn');
+    btn.addEventListener('click', function(){
+      if(step.classList.contains('done')) return;
+      markDone(step, true);
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    steps.forEach(function(s){
+      s.classList.remove('done');
+      var btn = s.querySelector('.btn');
+      if(btn) btn.textContent = btn.getAttribute('data-orig') || btn.textContent;
+    });
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    update();
+  });
+  steps.forEach(function(s){
+    var btn = s.querySelector('.btn');
+    if(btn) btn.setAttribute('data-orig', btn.textContent);
+  });
+  loadState();
+  update();
+})();
+</script>
+</body>
+</html>
